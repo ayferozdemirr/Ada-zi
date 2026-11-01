@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ada İzi — Kıbrıs'ı Yaşayarak Keşfet</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Playfair Display (Serif) & Inter (Sans-serif) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            bg: '#fcfbf7',
+                            card: '#f7f4ed',
+                            cardDark: '#212529',
+                            green: '#1d382b',
+                            greenHover: '#13271e',
+                            terracotta: '#8c3a2b',
+                            text: '#2c302e',
+                            muted: '#6b7280',
+                            border: '#e5e2d9'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Inter', 'sans-serif']
+                    }               }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #fcfbf7;
+            color: #2c302e;
+            font-family: 'Inter', sans-serif;
+        }
+        .font-serif {
+            font-family: 'Playfair Display', Georgia, serif;
+        }
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {           background: #f7f4ed;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c5c1b5;
+            border-radius: 9999px;
+        }
+        .modal-blur {
+            backdrop-filter: blur(8px);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-brand-green selection:text-white">
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-5 right-5 z-50 transform translate-x-full transition-transform duration-300 ease-in-out bg-brand-green text-white px-5 py-3 rounded-xl shadow-xl flex items-center gap-3 border border-emerald-800 pointer-events-none">
+        <i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-400"></i>        <span id="toast-message" class="text-sm font-medium">İşlem başarıyla gerçekleştirildi.</span>
+    </div>
+
+    <!-- ================= 1. ÜST NAVİGASYON (HEADER) ================= -->
+    <header class="sticky top-0 z-30 bg-[#fcfbf7]/90 backdrop-blur-md border-b border-brand-border/60 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="text-brand-terracotta text-2xl font-light transform group-hover:rotate-45 transition-transform duration-300">
+                    ✳️
+                </div>
+                <div>
+                    <span class="font-serif text-2xl font-bold tracking-tight text-brand-green block leading-none">ada izi</span>                   <span class="text-[9px] uppercase tracking-widest text-brand-muted font-semibold block mt-1">Kıbrıs'ı Yaşayarak Keşfet</span>
+                </div>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-brand-text">
+                <a href="#deneyimler" class="hover:text-brand-terracotta transition-colors">Deneyimler</a>
+                <a href="#hikayemiz" class="hover:text-brand-terracotta transition-colors">Bizim hikâyemiz</a>
+                <a href="#etki" class="hover:text-brand-terracotta transition-colors">Bıraktığın etki</a>
+            </nav>
+
+            <!-- Actions -->
+            <div class="flex items-center gap-3">
+                <button onclick="openPassportModal()" class="text-xs sm:text-sm font-medium text-brand-green hover:text-brand-terracotta px-3 py-2 rounded-lg transition-colors flex items-center gap-1">
+                    Profil oluştur <span class="text-xs">↗️</span>                </button>
+                <button onclick="openQuizModal()" class="bg-brand-green hover:bg-brand-greenHover text-white text-xs sm:text-sm font-medium px-4 py-2.5 rounded-xl shadow-sm transition-all duration-200 flex items-center gap-1.5 active:scale-95">
+                    Rotanı bul <span class="text-xs">↗️</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <!-- ================= 2. HERO BÖLÜMÜ ================= -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+                
+                <!-- Left Text Column -->
+                <div class="lg:col-span-6 space-y-6">                   <div class="flex items-center gap-2 text-brand-terracotta text-xs font-semibold uppercase tracking-widest">
+                        <span>✳️</span>
+                        <span>Bir adadan çok daha fazlası</span>
+                    </div>
+
+                    <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal leading-[1.15] text-brand-green">
+                        Biraz keşfet.<br>
+                        Biraz üret.<br>
+                        <span class="font-serif italic font-light text-brand-terracotta">Adaya iz bırak.</span>
+                    </h1>
+
+                    <p class="text-brand-muted text-base sm:text-lg max-w-xl font-normal leading-relaxed">
+                        Otelin kapısından, bildiğin yolların dışına. Kıbrıs'ın saklı güzelliklerini yerel insanlarla keşfet; eve bir hatıradan fazlasını götür.                   </p>
+
+                    <div class="pt-2">
+                        <button onclick="openQuizModal()" class="bg-brand-green hover:bg-brand-greenHover text-white text-sm sm:text-base font-medium px-6 py-3.5 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2 group active:scale-95">
+                            <span>Sana uygun deneyimi bul</span>
+                            <span class="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform text-sm">↗️</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Visual Column (Girne Harbor) -->
+                <div class="lg:col-span-6">
+                    <div class="relative rounded-3xl overflow-hidden shadow-xl bg-brand-card group">
+                        <!-- Curved Top Corner Overlay Effect like Screenshot -->                       <div class="aspect-[4/3] w-full relative overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?q=80&w=1000&auto=format&fit=crop" 
+                                 alt="Girne Limanı" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                            
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+
+                            <!-- Badge Top Right -->
+                            <div class="absolute top-4 right-4 bg-white/80 backdrop-blur-md rounded-full w-24 h-24 p-2 flex flex-col items-center justify-center text-center shadow-lg border border-white/50">
+                                <span class="text-[9px] font-bold uppercase tracking-wider text-brand-green">Yereli Keşfet</span>
+                                <span class="text-brand-terracotta text-sm my-0.5">✳️</span>
+                                <span class="text-[8px] font-medium text-brand-muted">İyi bir iz bırak</span>
+                            </div>
+                            <!-- Bottom Info Text -->
+                            <div class="absolute bottom-6 left-6 right-6 text-white space-y-1">
+                                <span class="text-[11px] tracking-wider text-emerald-200 font-mono">35°20' K · 33°19' D</span>
+                                <h3 class="font-serif text-2xl font-medium tracking-tight">Bir adanın binbir hikâyesi.</h3>
+                                <p class="text-xs text-gray-300">Girne, Kıbrıs — Gerçek bölge fotoğrafı</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= 3. KATEGORİ VE KEŞİF BÖLÜMÜ ("ADANIN DÖRT AYRI HİKÂYESİ") ================= -->-->
+        <section id="deneyimler" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-t border-brand-border/60">
+            <!-- Section Header -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+                <div>
+                    <span class="text-xs font-semibold uppercase tracking-widest text-brand-muted block mb-2">Adanın Dört Ayrı Hikâyesi</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl text-brand-green">Sen hangi izden gideceksin?</h2>
+                </div>
+                <p class="text-sm text-brand-muted max-w-sm">
+                    Zeytin kokusundan denizin sesine, her rota seni başka bir Kıbrıs'la tanıştırır.
+                </p>
+            </div>
+
+            <!-- Filter Tabs -->            <div class="flex items-center gap-2 overflow-x-auto pb-4 mb-8 no-scrollbar">
+                <button onclick="filterCategory('all', this)" class="category-tab bg-brand-green text-white text-xs sm:text-sm font-medium px-4 py-2 rounded-full whitespace-nowrap transition-all shadow-sm">
+                    Tüm deneyimler <span class="ml-1 bg-white/20 px-1.5 py-0.5 rounded-full text-[10px]">4</span>
+                </button>
+                <button onclick="filterCategory('lezzet', this)" class="category-tab bg-brand-card hover:bg-brand-border/50 text-brand-text text-xs sm:text-sm font-medium px-4 py-2 rounded-full whitespace-nowrap transition-all">
+                    Yerel lezzetler
+                </button>
+                <button onclick="filterCategory('tarih', this)" class="category-tab bg-brand-card hover:bg-brand-border/50 text-brand-text text-xs sm:text-sm font-medium px-4 py-2 rounded-full whitespace-nowrap transition-all">
+                    Tarih & kültür
+                </button>
+                <button onclick="filterCategory('orman', this)" class="category-tab bg-brand-card hover:bg-brand-border/50 text-brand-text text-xs sm:text-sm font-medium px-4 py-2 rounded-full whitespace-nowrap transition-all">
+                    Orman & keşif               </button>
+                <button onclick="filterCategory('deniz', this)" class="category-tab bg-brand-card hover:bg-brand-border/50 text-brand-text text-xs sm:text-sm font-medium px-4 py-2 rounded-full whitespace-nowrap transition-all">
+                    Deniz & doğal yaşam
+                </button>
+            </div>
+
+            <!-- Experience Cards Grid (4 Main Cards matching Photos) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                <!-- CARD 1: Yerel Lezzetler -->
+                <div data-category="lezzet" class="experience-card bg-brand-card rounded-2xl overflow-hidden border border-brand-border/50 flex flex-col justify-between hover:shadow-xl transition-all duration-300 group">                   <div>
+                        <div class="relative h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1541447271487-09612b3f49f7?q=80&w=800&auto=format&fit=crop" alt="Zeytin Ağacı" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-md px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider text-brand-green">
+                                YEREL LEZZETLER
+                            </div>
+                        </div>
+                        <div class="p-5 space-y-2">
+                            <span class="text-[11px] font-semibold text-brand-muted uppercase tracking-wider block">✦ AKDENİZ KÖYÜ</span>
+                            <h3 class="font-serif text-xl text-brand-green font-semibold">Zeytinin izinde</h3>
+                            <p class="text-xs text-brand-muted leading-relaxed">
+                                Bir üreticinin hikâyesine ortak ol. Zeytinyağı, el yapımı sabun ve kültürel miras aynı rotada.                           </p>
+                        </div>
+                    </div>
+                    <div class="p-5 pt-0">
+                        <button onclick="openDetailModal('zeytin')" class="w-full text-left text-xs font-semibold text-brand-green group-hover:text-brand-terracotta flex items-center justify-between pt-3 border-t border-brand-border/40">
+                            <span>Deneyimi incele</span>
+                            <span>↗️</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CARD 2: Tarih & Kültür -->
+                <div data-category="tarih" class="experience-card bg-brand-card rounded-2xl overflow-hidden border border-brand-border/50 flex flex-col justify-between hover:shadow-xl transition-all duration-300 group">
+                    <div>                       <div class="relative h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1564507592333-c60657eea523?q=80&w=800&auto=format&fit=crop" alt="Antik Tiyatro" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-md px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider text-brand-green">
+                                TARİH & DÖNÜŞÜM
+                            </div>
+                        </div>
+                        <div class="p-5 space-y-2">
+                            <span class="text-[11px] font-semibold text-brand-muted uppercase tracking-wider block">✦ SOLİ BAZİLİKASI · LEFKE</span>
+                            <h3 class="font-serif text-xl text-brand-green font-semibold">Bir daldan bir hikâye</h3>
+                            <p class="text-xs text-brand-muted leading-relaxed">
+                                Antik mozaiklerden hurma örgüsüne. Yerel tatlarla dolu, kendi ellerinden çıkan bir hatıra.                            </p>
+                        </div>
+                    </div>
+                    <div class="p-5 pt-0">
+                        <button onclick="openDetailModal('soli')" class="w-full text-left text-xs font-semibold text-brand-green group-hover:text-brand-terracotta flex items-center justify-between pt-3 border-t border-brand-border/40">
+                            <span>Deneyimi incele</span>
+                            <span>↗️</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CARD 3: Orman & Keşif -->                <div data-category="orman" class="experience-card bg-brand-card rounded-2xl overflow-hidden border border-brand-border/50 flex flex-col justify-between hover:shadow-xl transition-all duration-300 group">
+                    <div>
+                        <div class="relative h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=800&auto=format&fit=crop" alt="Orman" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-md px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider text-brand-green">
+                                ORMAN & KOKU
+                            </div>
+                        </div>
+                        <div class="p-5 space-y-2">
+                            <span class="text-[11px] font-semibold text-brand-muted uppercase tracking-wider block">✦ ALEVKAYA · SOURP MAGAR</span>
+                            <h3 class="font-serif text-xl text-brand-green font-semibold">Ormanın kokusu sende</h3>
+                            <p class="text-xs text-brand-muted leading-relaxed">                               Orman patikalarında yavaşla. Sedir ve sandal ağacı notalarıyla kendi kokunu tasarla.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-5 pt-0">
+                        <button onclick="openDetailModal('orman')" class="w-full text-left text-xs font-semibold text-brand-green group-hover:text-brand-terracotta flex items-center justify-between pt-3 border-t border-brand-border/40">
+                            <span>Deneyimi incele</span>
+                            <span>↗️</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CARD 4: Deniz & Doğal Yaşam -->
+                <div data-category="deniz" class="experience-card bg-brand-card rounded-2xl overflow-hidden border border-brand-border/50 flex flex-col justify-between hover:shadow-xl transition-all duration-300 group">
+                    <div>
+                        <div class="relative h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop" alt="Alagadi Sahili" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-md px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider text-brand-green">
+                                DENİZ & DOĞAL YAŞAM
+                            </div>
+                        </div>
+                        <div class="p-5 space-y-2">
+                            <span class="text-[11px] font-semibold text-brand-muted uppercase tracking-wider block">✦ ALAGADİ SAHİLİ · GİRNE</span>
+                            <h3 class="font-serif text-xl text-brand-green font-semibold">Denize güzel bir iz</h3>
+                            <p class="text-xs text-brand-muted leading-relaxed">
+                                Kaplumbağaların kıyısına özen göster. Deniz kabuklarıyla kendi takını tasarla.                            </p>
+                        </div>
+                    </div>
+                    <div class="p-5 pt-0">
+                        <button onclick="openDetailModal('alagadi')" class="w-full text-left text-xs font-semibold text-brand-green group-hover:text-brand-terracotta flex items-center justify-between pt-3 border-t border-brand-border/40">
+                            <span>Deneyimi incele</span>
+                            <span>↗️</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+        <!-- ================= 4. KATKI VE PASAPORT BÖLÜMÜ ================= -->
+        <section id="etki" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <!-- Top Dark Impact Card (Matching Photo 3 & 4) -->
+            <div class="bg-[#1f2326] text-white rounded-3xl p-8 lg:p-12 shadow-2xl relative overflow-hidden mb-12">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    
+                    <div class="lg:col-span-6 space-y-6">
+                        <span class="text-[10px] uppercase tracking-widest text-emerald-400 font-bold block">GÜZEL HATIRALAR, ÖLÇÜLEBİLİR ADIMLAR</span>
+                        <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-light leading-tight">
+                            Hatıran sende.<br>
+                            <span class="text-amber-200 italic font-serif">Güzel izin adada.</span>
+                        </h2>
+                        <p class="text-gray-300 text-sm sm:text-base font-light leading-relaxed max-w-md">
+                            Soli'de budama artıkları bir el emeğine dönüşsün. Alagadi'de geri dönüşüm kıyıdan başlasın. Bir deneyim seç, planladığın katkıyı gör.
+                        </p>
+                        <button onclick="openDetailModal('soli')" class="bg-white text-brand-text hover:bg-gray-100 text-xs sm:text-sm font-semibold px-5 py-3 rounded-xl transition-all flex items-center gap-2">                           <span>Soli'deki katkını hesapla</span>
+                            <span>↗️</span>
+                        </button>
+                    </div>
+
+                    <div class="lg:col-span-6 bg-white/5 border border-white/10 p-6 sm:p-8 rounded-2xl backdrop-blur-sm space-y-4">
+                        <div class="flex items-center gap-2 text-amber-200">
+                            <span class="text-xl">♣️</span>
+                            <h3 class="font-serif text-xl sm:text-2xl text-white">Bir dalın ikinci hikâyesi.</h3>
+                        </div>
+                        <p class="text-xs sm:text-sm text-gray-300 leading-relaxed font-light">
+                            Hurma dalları ve yapraklarını imha etmek yerine, belediyeden makul bir bedelle alıp sepet ve bardak altlıklarına dönüştürmeyi hedefliyoruz.
+                        </p>
+                        
+                        <div class="grid grid-cols-2 gap-4 pt-4 border-t border-white/10 text-xs">                           <div>
+                                <span class="text-gray-400 block text-[10px] uppercase">Yeniden kullanım</span>
+                                <span class="text-white font-medium">Organik malzemeye yeni değer</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-400 block text-[10px] uppercase">Yerel katkı</span>
+                                <span class="text-white font-medium">Belediyeye ek gelir hedefi</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Ada Pasaportum Section (Matching Photo 4 & 5) -->
+            <div id="pasaport" class="bg-brand-card border border-brand-border rounded-3xl p-8 lg:p-12 shadow-sm">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">                   
+                    <div class="lg:col-span-6 space-y-4">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-brand-muted">KEŞFİN BİTER, GÜZEL İZİN KALIR</span>
+                        <h2 class="font-serif text-3xl sm:text-4xl text-brand-green">Senin ada pasaportun.</h2>
+                        <p class="text-sm text-brand-muted leading-relaxed max-w-md">
+                            Katıldığın her atölye ayrı bir hikâye, her katkı ayrı bir puan. Profilini oluştur, deneyimlerini ve katkılarını biriktir.
+                        </p>
+                        <button onclick="openPassportModal()" class="bg-brand-green hover:bg-brand-greenHover text-white text-xs sm:text-sm font-medium px-5 py-3 rounded-xl transition-all inline-flex items-center gap-2">
+                            <span>Katkı pasaportumu aç</span>
+                            <span>↗️</span>
+                        </button>
+                    </div>
+
+                    <div class="lg:col-span-6 bg-white rounded-2xl p-6 sm:p-8 border border-brand-border shadow-sm space-y-6">
+                        <div class="flex items-center justify-between border-b border-brand-border pb-4">
+                            <span class="text-xs uppercase font-semibold text-brand-muted tracking-wider">HER ATÖLYEDE EN FAZLA</span>
+                            <div class="text-right">
+                                <span id="passport-total-points" class="font-serif text-4xl sm:text-5xl font-bold text-brand-green">100</span>
+                                <span class="text-xs text-brand-muted font-medium ml-1">puan</span>
+                            </div>
+                        </div>
+
+                        <!-- Points Grid -->
+                        <div class="grid grid-cols-2 gap-4 text-xs">
+                            <div class="p-3 bg-brand-bg rounded-xl flex justify-between items-center">
+                                <span class="text-brand-muted flex items-center gap-1"><span class="text-brand-terracotta">⚲</span> Geri dönüşüm</span>
+                                <span class="font-bold text-brand-green" id="pt-geridonisum">25</span>                           </div>
+                            <div class="p-3 bg-brand-bg rounded-xl flex justify-between items-center">
+                                <span class="text-brand-muted flex items-center gap-1"><span class="text-brand-terracotta">✳️</span> Yerel esnaf</span>
+                                <span class="font-bold text-brand-green" id="pt-esnaf">25</span>
+                            </div>
+                            <div class="p-3 bg-brand-bg rounded-xl flex justify-between items-center">
+                                <span class="text-brand-muted flex items-center gap-1"><span class="text-brand-terracotta">↗️</span> Ekonomi</span>
+                                <span class="font-bold text-brand-green" id="pt-ekonomi">25</span>
+                            </div>
+                            <div class="p-3 bg-brand-bg rounded-xl flex justify-between items-center">
+                                <span class="text-brand-muted flex items-center gap-1"><span class="text-brand-terracotta">⌂</span> İstihdam üretme</span>
+                                <span class="font-bold text-brand-green" id="pt-istihdam">25</span>
+                            </div>
+                        </div>
+
+                        <p class="text-[10px] text-brand-muted leading-tight text-center italic">
+                            Puanlar kişisel katkı beyanına dayanır. Bir çevresel sertifika veya maddi ödül değildir.
+                        </p>                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 5. ALT BANNER & HİSSEDİLİR ÇAĞRI ================= -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+            <div class="py-12 px-6 rounded-3xl bg-gradient-to-b from-brand-card/50 to-transparent border border-brand-border/40 max-w-3xl mx-auto space-y-6">
+                <div class="text-brand-terracotta text-3xl">✳️</div>
+                <h2 class="font-serif text-3xl sm:text-5xl text-brand-green leading-tight">
+                    Bu kez Kıbrıs'tan<br>
+                    <span class="italic font-light text-brand-terracotta">bir hikâyle dön.</span>
+                </h2>
+                <div>
+                    <button onclick="openQuizModal()" class="bg-brand-green hover:bg-brand-greenHover text-white text-sm font-medium px-6 py-3.5 rounded-xl shadow-md transition-all inline-flex items-center gap-2">
+                        <span>Benim deneyimimi bul</span>
+                        <span>↗️</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-brand-card border-t border-brand-border/60 py-8 text-xs text-brand-muted">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-2">
+                <span class="text-brand-terracotta">✳️</span>                <span class="font-serif font-bold text-brand-green text-sm">ada izi</span>
+                <span class="text-[10px]">| Yereli yaşat. Doğayı gözet. Kendine bir hatıra bırak.</span>
+            </div>
+            <div>
+                © 2026 Ada İzi — Kıbrıs Deneyim Platformu
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- ================= 6. DİNAMİK ANKET MODALI ("Sana Özel Bir Ada Hikâyesi") ================= -->
+    <div id="quiz-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/50 modal-blur overflow-y-auto">
+        <div class="bg-[#f7f4ed] border border-brand-border rounded-3xl w-full max-w-2xl shadow-2xl relative overflow-hidden my-8 my-auto">
+                        <!-- Modal Header -->
+            <div class="p-6 sm:p-8 border-b border-brand-border/60 flex items-center justify-between">
+                <div>
+                    <span class="text-[10px] font-bold tracking-widest text-brand-muted uppercase block">SANA ÖZEL BİR ADA HİKÂYESİ</span>
+                    <span id="quiz-step-indicator" class="text-xs font-semibold text-brand-terracotta uppercase">SORU 1 / 4</span>
+                </div>
+                <button onclick="closeQuizModal()" class="w-8 h-8 rounded-full bg-black/5 hover:bg-black/10 flex items-center justify-center text-brand-text transition-colors">
+                    ✕
+                </button>
+            </div>
+
+            <!-- Modal Body (Steps) -->
+            <div class="p-6 sm:p-8 space-y-6">
+                <!-- STEP 1: Kiminle -->
+                <div id="quiz-step-1" class="quiz-step space-y-6">
+                    <h3 class="font-serif text-2xl sm:text-3xl text-brand-green">Bu hikâyeyi kiminle paylaşacaksın?</h3>
+                    <p class="text-xs text-brand-muted">Tek başına bir keşif mi, birlikte yeni bir hatıra mı?</p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <label class="quiz-option cursor-pointer p-4 rounded-xl border border-brand-border bg-white hover:border-brand-green transition-all flex items-start gap-3">
+                            <input type="radio" name="quiz-companion" value="Tek başıma" checked class="mt-1 text-brand-green focus:ring-brand-green">
+                            <div>
+                                <span class="text-sm font-semibold text-brand-green block">✳️ Tek başıma</span>
+                                <span class="text-xs text-brand-muted">Kendi ritmimde keşfetmek</span>                           </div>
+                        </label>
+                        <label class="quiz-option cursor-pointer p-4 rounded-xl border border-brand-border bg-white hover:border-brand-green transition-all flex items-start gap-3">
+                            <input type="radio" name="quiz-companion" value="Ailemle" class="mt-1 text-brand-green focus:ring-brand-green">
+                            <div>
+                                <span class="text-sm font-semibold text-brand-green block">⌂ Ailemle</span>
+                                <span class="text-xs text-brand-muted">Birlikte öğrenmek, birlikte üretmek</span>
+                            </div>
+                        </label>
+                        <label class="quiz-option cursor-pointer p-4 rounded-xl border border-brand-border bg-white hover:border-brand-green transition-all flex items-start gap-3">
+                            <input type="radio" name="quiz-companion" value="Partnerimle" class="mt-1 text-brand-green focus:ring-brand-green">
+                            <div>                                <span class="text-sm font-semibold text-brand-green block">♡ Partnerimle</span>
+                                <span class="text-xs text-brand-muted">İkimize özel yeni bir anı</span>
+                            </div>
+                        </label>
+                        <label class="quiz-option cursor-pointer p-4 rounded-xl border border-brand-border bg-white hover:border-brand-green transition-all flex items-start gap-3">
+                            <input type="radio" name="quiz-companion" value="Arkadaşlarımla" class="mt-1 text-brand-green focus:ring-brand-green">
+                            <div>
+                                <span class="text-sm font-semibold text-brand-green block">✳️ Arkadaşlarımla</span>
+                                <span class="text-xs text-brand-muted">Paylaştıkça çoğalan bir deneyim</span>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="pt-2">
+                        <label class="text-xs text-brand-muted block mb-1">Katılımcı sayısı</label>
+                        <input type="number" id="quiz-people-count" value="1" min="1" max="10" class="w-24 p-2.5 rounded-xl border border-brand-border text-sm font-semibold text-brand-green bg-white">
+                    </div>
+                </div>
+
+                <!-- STEP 2: Ne Zaman -->
+                <div id="quiz-step-2" class="quiz-step hidden space-y-6">
+                    <h3 class="font-serif text-2xl sm:text-3xl text-brand-green">Ada seni ne zaman karşılasın?</h3>
+                    <p class="text-xs text-brand-muted">Tarih aralığını seç, bu aralıktaki örnek atölye günlerini bulalım.</p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-xs text-brand-muted block mb-1">Başlangıç Tarihi</label>
+                            <input type="date" id="quiz-start-date" value="2026-11-01" class="w-full p-3 rounded-xl border border-brand-border text-sm font-medium text-brand-green bg-white">
+                        </div>
+                        <div>
+                            <label class="text-xs text-brand-muted block mb-1">Bitiş Tarihi</label>
+                            <input type="date" id="quiz-end-date" value="2026-11-01" class="w-full p-3 rounded-xl border border-brand-border text-sm font-medium text-brand-green bg-white">
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-white/60 rounded-xl border border-brand-border/60 text-xs text-brand-muted">
+                        Takvim kontrolü Akdeniz ve Merkez katılımına göredir. Seçtiğin tarihler doğrultusunda uygun atölye seçenekleri hazırlanacaktır.
+                    </div>
+                </div>
+
+                <!-- STEP 3: Hangi Hikaye -->
+                <div id="quiz-step-3" class="quiz-step hidden space-y-6">                    <h3 class="font-serif text-2xl sm:text-3xl text-brand-green">Hangi hikâye seni çağırıyor?</h3>
+                    <p class="text-xs text-brand-muted">En çok yapmak istediğin şeyi seç.</p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <label class="quiz-option cursor-pointer p-4 rounded-xl border border-brand-border bg-white hover:border-brand-green transition-all flex items-start gap-3">
+                            <input type="radio" name="quiz-theme" value="tarih" checked class="mt-1 text-brand-green focus:ring-brand-green">
+                            <div>
+                                <span class="text-sm font-semibold text-brand-green block">✦ Tarihin izinde</span>
+                                <span class="text-xs text-brand-muted">Tarihi ve kültürel miras, antik kentler</span>
+                            </div>
+                        </label>
+                        <label class="quiz-option cursor-pointer p-4 rounded-xl border border-brand-border bg-white hover:border-brand-green transition-all flex items-start gap-3">
+                            <input type="radio" name="quiz-theme" value="lezzet" class="mt-1 text-brand-green focus:ring-brand-green">
+                            <div>
+                                <span class="text-sm font-semibold text-brand-green block">♣️ Yerel tatların peşinde</span>
+                                <span class="text-xs text-brand-muted">Yerel ürünler ve üreticilerle tanışma</span>                            </div>
+                        </label>
+                        <label class="quiz-option cursor-pointer p-4 rounded-xl border border-brand-border bg-white hover:border-brand-green transition-all flex items-start gap-3">
+                            <input type="radio" name="quiz-theme" value="orman" class="mt-1 text-brand-green focus:ring-brand-green">
+                            <div>
+                                <span class="text-sm font-semibold text-brand-green block">↑ Ormanda bir gezinti</span>
+                                <span class="text-xs text-brand-muted">Doğa yürüyüşü ve kokular</span>
+                            </div>
+                        </label>
+                        <label class="quiz-option cursor-pointer p-4 rounded-xl border border-brand-border bg-white hover:border-brand-green transition-all flex items-start gap-3">
+                            <input type="radio" name="quiz-theme" value="deniz" class="mt-1 text-brand-green focus:ring-brand-green">
+                            <div>
+                                <span class="text-sm font-semibold text-brand-green block">≈ Denize doğru</span>
+                                <span class="text-xs text-brand-muted">Sahil ve doğal yaşam mirası</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- STEP 4: Nasıl Bir Iz -->
+                <div id="quiz-step-4" class="quiz-step hidden space-y-6">
+                    <h3 class="font-serif text-2xl sm:text-3xl text-brand-green">Adada nasıl bir iz bırakmak istersin?</h3>
+                    <p class="text-xs text-brand-muted">Deneyimini senin için anlamlı kılan katkı hangisi?</p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <label class="quiz-option cursor-pointer p-4 rounded-xl border border-brand-border bg-white hover:border-brand-green transition-all flex items-start gap-3">
+                            <input type="radio" name="quiz-impact" value="dal" checked class="mt-1 text-brand-green focus:ring-brand-green">
+                            <div>
+                                <span class="text-sm font-semibold text-brand-green block">♣️ Bir dala yeni hayat</span>
+                                <span class="text-xs text-brand-muted">Budama artıklarını el emeğine dönüştürmek</span>
+                            </div>
+                        </label>
+                        <label class="quiz-option cursor-pointer p-4 rounded-xl border border-brand-border bg-white hover:border-brand-green transition-all flex items-start gap-3">
+                            <input type="radio" name="quiz-impact" value="esnaf" class="mt-1 text-brand-green focus:ring-brand-green"> <div>
+                                <span class="text-sm font-semibold text-brand-green block">✳️ Yerel emeği yaşatmak</span>
+                                <span class="text-xs text-brand-muted">Üreticiyi desteklemek, kültürle tanışmak</span>
+                            </div>
+                        </label>
+                        <label class="quiz-option cursor-pointer p-4 rounded-xl border border-brand-border bg-white hover:border-brand-green transition-all flex items-start gap-3">
+                            <input type="radio" name="quiz-impact" value="kiyiyasam" class="mt-1 text-brand-green focus:ring-brand-green">
+                            <div>
+                                <span class="text-sm font-semibold text-brand-green block">≈ Kıyıya ve yaşamı korumak</span>
+                                <span class="text-xs text-brand-muted">Geri dönüşüme katkı sunmak, yuvaları gözetmek</span>
+                            </div>
+                        </label>
+                        <label class="quiz-option cursor-pointer p-4 rounded-xl border border-brand-border bg-white hover:border-brand-green transition-all flex items-start gap-3">
+                            <input type="radio" name="quiz-impact" value="doga" class="mt-1 text-brand-green focus:ring-brand-green">
+                            <div>
+                                <span class="text-sm font-semibold text-brand-green block">↑ Doğayı izleyerek keşfetmek</span>
+                                <span class="text-xs text-brand-muted">Ormanda yürümek, mirası saygıyla tanımak</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Modal Footer Controls -->
+            <div class="p-6 sm:p-8 bg-white/40 border-t border-brand-border/60 flex items-center justify-between">
+                <button id="quiz-prev-btn" onclick="prevQuizStep()" class="text-xs font-semibold text-brand-muted hover:text-brand-green hidden">
+                    ← Geri
+                </button>
+                <div class="ml-auto">
+                    <button id="quiz-next-btn" onclick="nextQuizStep()" class="bg-brand-green hover:bg-brand-greenHover text-white text-xs sm:text-sm font-semibold px-6 py-2.5 rounded-xl transition-all">
+                        Devam et →
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- ================= 7. ATÖLYE DETAY VE KAZANIM MODALI ("Denize Güzel Bir İz") ================= -->
+    <div id="detail-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-6 bg-black/60 modal-blur overflow-y-auto">
+        <div class="bg-[#f7f4ed] border border-brand-border rounded-3xl w-full max-w-3xl shadow-2xl relative overflow-hidden my-auto max-h-[92vh] flex flex-col">
+            
+            <!-- Sticky Modal Header -->
+            <div class="p-5 sm:p-6 bg-[#f7f4ed] border-b border-brand-border/60 flex items-center justify-between shrink-0">
+                <div>
+                    <span id="detail-location-badge" class="text-[10px] font-bold tracking-widest text-brand-muted uppercase block">ALAGADİ SAHİLİ · GİRNE</span>
+                    <h2 id="detail-title" class="font-serif text-2xl sm:text-3xl text-brand-green font-semibold">Denize güzel bir iz</h2>
+                </div>
+                <button onclick="closeDetailModal()" class="w-8 h-8 rounded-full bg-black/5 hover:bg-black/10 flex items-center justify-center text-brand-text transition-colors">
+                    ✕
+                </button>
+            </div>
+
+            <!-- Scrollable Content -->
+            <div class="p-5 sm:p-8 space-y-8 overflow-y-auto">
+
+                <!-- Description & Image Section (Photo 6) -->
+                <div class="space-y-4">
+                    <p id="detail-description" class="text-xs sm:text-sm text-brand-muted leading-relaxed font-normal">
+                        Bir kıyıya iyi gelmek bazen birlikte eğilip geri dönüşüme kazandırılabilecek bir malzemeyi toplamakla başlar. Alagadi'nin doğal yaşam mirasını tanı, sonra denizin renklerini el emeği bir takıya dönüştür.
+                    </p>
+
+                    <div class="relative h-60 sm:h-72 rounded-2xl overflow-hidden border border-brand-border">
+                        <img id="detail-img" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop" alt="Alagadi Sahili" class="w-full h-full object-cover">
+                    </div>
+
+                    <div class="flex items-center justify-between text-xs text-brand-muted pt-1">
+                        <span id="detail-time">3 saat · Atölye + rehberli keşif · Pazar 09:00</span>
+                    </div>
+                </div>
+
+                <!-- Points Card Box (Photo 6 & 7) -->
+                <div class="bg-white/80 rounded-2xl p-6 border border-brand-border space-y-4 shadow-sm">
+                    <div class="flex items-center justify-between border-b border-brand-border/60 pb-3">
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-brand-muted block">BU DENEYİMİN KATKI KARTI</span>
+                            <h4 class="font-serif text-base text-brand-green font-medium">Dört katkı, sana ait bir iz.</h4>
+                        </div>
+                        <div class="text-right">
+                            <span id="detail-card-points" class="font-serif text-3xl font-bold text-brand-terracotta">0/100</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                        <div class="p-3 bg-[#fcfbf7] rounded-xl border border-brand-border/40">
+                            <span class="text-xs font-bold text-brand-green block">0</span>
+                            <span class="text-[10px] text-brand-muted block font-medium">/ 25 puan</span>
+                            <span class="text-[9px] text-brand-muted">⚲ Geri dönüşüm</span>
+                        </div>
+                        <div class="p-3 bg-[#fcfbf7] rounded-xl border border-brand-border/40">
+                            <span class="text-xs font-bold text-brand-green block">0</span>
+                            <span class="text-[10px] text-brand-muted block font-medium">/ 25 puan</span>
+                            <span class="text-[9px] text-brand-muted">✳️ Yerel esnaf</span>
+                        </div>
+                        <div class="p-3 bg-[#fcfbf7] rounded-xl border border-brand-border/40">
+                            <span class="text-xs font-bold text-brand-green block">0</span>
+                            <span class="text-[10px] text-brand-muted block font-medium">/ 25 puan</span>
+                            <span class="text-[9px] text-brand-muted">↗️ Ekonomik katkı</span>
+                        </div>
+                        <div class="p-3 bg-[#fcfbf7] rounded-xl border border-brand-border/40">
+                            <span class="text-xs font-bold text-brand-green block">0</span>
+                            <span class="text-[10px] text-brand-muted block font-medium">/ 25 puan</span>
+                            <span class="text-[9px] text-brand-muted">⌂ İstihdam üretme</span>
+                        </div>
+                    </div>
+
+                    <p class="text-[10px] text-brand-muted italic leading-relaxed">
+                        Her katkı alanı, pozitif bir gerçekleşmiş değer beyan edildiğinde 25 puan getirir. Atölye başına en fazla 100 puan; alt etkinlikler aynı karta katkı sağlar. Kayıt güncellenince puan yeniden hesaplanır.
+                    </p>
+
+                    <button onclick="saveWorkshopContribution()" class="w-full bg-brand-green hover:bg-brand-greenHover text-white text-xs sm:text-sm font-semibold py-3 rounded-xl transition-all shadow-sm flex items-center justify-center gap-2">
+                        <span>Atölyemi tamamladım · katkımı kaydet</span>
+                        <span>↗️</span>
+                    </button>
+                </div>
+
+                <!-- Detailed Steps Section (Photo 7 & 8) -->
+                <div class="space-y-4">
+                    <h3 class="font-serif text-xl text-brand-green font-medium">Her küçük adımın ayrı bir katkısı var.</h3>
+
+                    <!-- Step Item 1 -->
+                    <div class="bg-white/60 p-5 rounded-2xl border border-brand-border/60 space-y-3">
+                        <h4 class="font-serif text-base text-brand-green font-semibold">Kaplumbağaların kıyısını tanı</h4>
+                        <p class="text-xs text-brand-muted leading-relaxed">
+                            Caretta caretta ve yeşil deniz kaplumbağalarının yuvalama alanlarını öğren. Koruma ekibinin izin verdiği saatlerde ve alanlarda hareket edilir; yuvalara yaklaşılmaz ve kum kazılmaz.
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-[11px] text-brand-muted border-t border-brand-border/40">
+                            <div><strong class="text-brand-green">⚲ Geri dönüşüm:</strong> Bilgilendirme için otomatik kilogram katkısı yazılmaz.</div>
+                            <div><strong class="text-brand-green">✳️ Yerel esnaf:</strong> Varsa yerel rehberlik ve eğitim hizmetinin gerçek bedeli kaydedilir.</div>
+                        </div>
+                    </div>
+
+                    <!-- Step Item 2 -->
+                    <div class="bg-white/60 p-5 rounded-2xl border border-brand-border/60 space-y-3">
+                        <h4 class="font-serif text-base text-brand-green font-semibold">Birlikte daha temiz bir kıyı</h4>
+                        <p class="text-xs text-brand-muted leading-relaxed">
+                            Eldiven ve uygun ekipmanla yalnızca yüzeydeki insan kaynaklı malzemeleri geri dönüşüm için topla. Doğal kabuklar, yosunlar, bitkiler ve canlılar sahilde kalır.
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-[11px] text-brand-muted border-t border-brand-border/40">
+                            <div><strong class="text-brand-green">⚲ Geri dönüşüm:</strong> Kıyıdan toplanan insan kaynaklı malzemeler tartımla kaydedilir.</div>
+                            <div><strong class="text-brand-green">✳️ Yerel esnaf:</strong> Temizlik ekipmanı ve yerel hizmetler ödemesi kaydedilir.</div>
+                        </div>
+                    </div>
+
+                    <!-- Step Item 3 -->
+                    <div class="bg-white/60 p-5 rounded-2xl border border-brand-border/60 space-y-3">
+                        <h4 class="font-serif text-base text-brand-green font-semibold">Tart, ayır, doğru yere ulaştır</h4>
+                        <p class="text-xs text-brand-muted leading-relaxed">
+                            Toplanan malzemeleri uygun geri dönüşüm ve bertaraf kanallarına ayır; tartım ve teslim bilgisini kaydet.
+                        </p>
+                    </div>
+
+                    <!-- Step Item 4 -->
+                    <div class="bg-white/60 p-5 rounded-2xl border border-brand-border/60 space-y-3">
+                        <h4 class="font-serif text-base text-brand-green font-semibold">Denizin renklerinden kendi takın</h4>
+                        <p class="text-xs text-brand-muted leading-relaxed">
+                            Koruma alanından toplanmamış, uygun kaynaktan temin edilen küçük deniz kabuklarıyla halhal, bileklik ya da kolye tasarla. Sahilden hatıra almak yerine kendi el emeğini yanında götür.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Günün Küçük Keşifleri (Photo 9 & 10) -->
+                <div class="bg-white/60 p-6 rounded-2xl border border-brand-border/60 space-y-4">
+                    <h3 class="font-serif text-lg text-brand-green font-medium">Günün küçük keşifleri</h3>
+                    
+                    <div class="space-y-3 text-xs text-brand-muted">
+                        <div class="flex gap-3 items-start">
+                            <span class="font-mono text-brand-terracotta font-bold">01</span>
+                            <p>Caretta caretta ve yeşil deniz kaplumbağalarının yuvalama alanları hakkında bilgilendirme.</p>
+                        </div>
+                        <div class="flex gap-3 items-start">
+                            <span class="font-mono text-brand-terracotta font-bold">02</span>
+                            <p>Koruma ekibinin belirlediği zaman ve bölgelerde, yuvalara yaklaşmadan yüzeydeki malzemeleri geri dönüşüm için toplama.</p>
+                        </div>
+                        <div class="flex gap-3 items-start">
+                            <span class="font-mono text-brand-terracotta font-bold">03</span>
+                            <p>Geri dönüşüm için toplanan malzemeleri türlerine göre ayırma ve tartım için kaydetme.</p>
+                        </div>
+                        <div class="flex gap-3 items-start">
+                            <span class="font-mono text-brand-terracotta font-bold">04</span>
+                            <p>Organizatörün sağladığı, koruma alanından toplanmamış deniz kabuklarıyla takı yapımı.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Date Selection & Action (Photo 10) -->
+                <div class="bg-brand-card p-6 rounded-2xl border border-brand-border space-y-4">
+                    <h3 class="font-serif text-lg text-brand-green font-medium">Örnek atölye gününü seç</h3>
+                    <p class="text-xs text-brand-muted">1 Kasım 2026 – Gerçek müsaitlik temsili olarak gösterilmektedir.</p>
+
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white p-4 rounded-xl border border-brand-border">
+                        <span class="text-sm font-medium text-brand-green">1 Kasım 2026 · 09:00</span>
+                        <span class="text-xs bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full font-medium">Örnek gün</span>
+                    </div>
+
+                    <button onclick="addToExplorationPlan()" class="w-full bg-brand-green hover:bg-brand-greenHover text-white text-xs sm:text-sm font-semibold py-3.5 rounded-xl transition-all shadow-md flex items-center justify-center gap-2">
+                        <span>Keşif planıma ekle</span>
+                        <span>↗️</span>
+                    </button>
+                    <p class="text-[10px] text-brand-muted text-center italic">Plan yalnızca bu tarayıcıda saklanır. Rezervasyon veya ödeme oluşturmaz.</p>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- ================= JAVASCRIPT APP LOGIC ================= -->
+    <script>
+        // State variables
+        let currentQuizStep = 1;
+        let userPoints = {
+            geridonisum: 25,
+            esnaf: 25,
+            ekonomi: 25,
+            istihdam: 25
+        };
+
+        // Initialize Lucide Icons
+        window.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+        });
+
+        // Toast Helper
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.innerText = message;
+            toast.classList.remove('translate-x-full');
+            setTimeout(() => {
+                toast.classList.add('translate-x-full');
+            }, 3500);
+        }
+
+        // Category Filter Logic
+        function filterCategory(category, buttonEl) {
+            // Tab styling
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                tab.classList.remove('bg-brand-green', 'text-white');
+                tab.classList.add('bg-brand-card', 'text-brand-text');
+            });
+            buttonEl.classList.remove('bg-brand-card', 'text-brand-text');
+            buttonEl.classList.add('bg-brand-green', 'text-white');
+
+            // Card visibility
+            const cards = document.querySelectorAll('.experience-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Quiz Modal Logic
+        function openQuizModal() {
+            currentQuizStep = 1;
+            updateQuizUI();
+            document.getElementById('quiz-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeQuizModal() {
+            document.getElementById('quiz-modal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        function updateQuizUI() {
+            document.getElementById('quiz-step-indicator').innerText = SORU ${currentQuizStep} / 4;
+            
+            // Toggle step visibility
+            for (let i = 1; i <= 4; i++) {
+                const stepEl = document.getElementById(quiz-step-${i});
+                if (i === currentQuizStep) {
+                    stepEl.classList.remove('hidden');
+                } else {
+                    stepEl.classList.add('hidden');
+                }
+            }
+
+            // Controls
+            const prevBtn = document.getElementById('quiz-prev-btn');
+            const nextBtn = document.getElementById('quiz-next-btn');
+
+            if (currentQuizStep === 1) {
+                prevBtn.classList.add('hidden');
+            } else {
+                prevBtn.classList.remove('hidden');
+            }
+
+            if (currentQuizStep === 4) {
+                nextBtn.innerText = 'Deneyimimi bul ↗️';
+            } else {
+                nextBtn.innerText = 'Devam et →';
+            }
+        }
+
+        function nextQuizStep() {
+            if (currentQuizStep < 4) {
+                currentQuizStep++;
+                updateQuizUI();
+            } else {
+                // Finish Quiz -> Open selected theme detail
+                closeQuizModal();
+                const selectedTheme = document.querySelector('input[name="quiz-theme"]:checked').value;
+                
+                let modalType = 'alagadi';
+                if (selectedTheme === 'tarih') modalType = 'soli';
+                else if (selectedTheme === 'lezzet') modalType = 'zeytin';
+                else if (selectedTheme === 'orman') modalType = 'orman';
+
+                openDetailModal(modalType);
+                showToast("Sana özel rota oluşturuldu!");
+            }
+        }
+
+        function prevQuizStep() {
+            if (currentQuizStep > 1) {
+                currentQuizStep--;
+                updateQuizUI();
+            }
+        }
+
+        // Workshop Detail Modal Data & Dynamic Loading
+        const workshopData = {
+            alagadi: {
+                location: "ALAGADİ SAHİLİ · GİRNE",
+                title: "Denize güzel bir iz",
+                description: "Bir kıyıya iyi gelmek bazen birlikte eğilip geri dönüşüme kazandırılabilecek bir malzemeyi toplamakla başlar. Alagadi'nin doğal yaşam mirasını tanı, sonra denizin renklerini el emeği bir takıya dönüştür.",
+                img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop",
+                time: "3 saat · Atölye + rehberli keşif · Pazar 09:00"
+            },
+            soli: {
+                location: "SOLİ BAZİLİKASI · LEFKE",
+                title: "Bir daldan bir hikâye",
+                description: "Budama artıklarını atık olmaktan çıkarıp yerel el zanaatıyla sepet ve bardak altlığına dönüştürüyoruz. Antik mozaiklerin gölgesinde sürdürülebilir bir miras izi.",
+                img: "https://images.unsplash.com/photo-1564507592333-c60657eea523?q=80&w=1200&auto=format&fit=crop",
+                time: "4 saat · Atölye + keşif · Cumartesi 10:00"
+            },
+            zeytin: {
+                location: "AKDENİZ KÖYÜ · GİRNE",
+                title: "Zeytinin izinde",
+                description: "Asırlık zeytin ağaçlarının arasında zeytinyağı yapımı ve doğal sabun atölyesi. Yerel üreticinin sofrasına otur, hikâyesine tanık ol.",
+                img: "https://images.unsplash.com/photo-1541447271487-09612b3f49f7?q=80&w=1200&auto=format&fit=crop",
+                time: "4 saat · Atölye + lezzet tadımı · Cuma 11:00"
+            },
+            orman: {
+                location: "ALEVKAYA · SOURP MAGAR",
+                title: "Ormanın kokusu sende",
+                description: "Beşparmak dağlarının yeşil patikalarında yavaş bir yürüyüş. Sedir ve sandal ağacı aromatik yağlarıyla kendi oda kokunu tasarla.",
+                img: "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1200&auto=format&fit=crop",
+                time: "3.5 saat · Atölye + doğa yürüyüşü · Salı 09:30"
+            }
+        };
+
+        function openDetailModal(type = 'alagadi') {
+            const data = workshopData[type] || workshopData['alagadi'];
+            
+            document.getElementById('detail-location-badge').innerText = data.location;
+            document.getElementById('detail-title').innerText = data.title;
+            document.getElementById('detail-description').innerText = data.description;
+            document.getElementById('detail-img').src = data.img;
+            document.getElementById('detail-time').innerText = data.time;
+
+            document.getElementById('detail-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDetailModal() {
+            document.getElementById('detail-modal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Save contribution logic
+        function saveWorkshopContribution() {
+            userPoints.geridonisum = 25;
+            userPoints.esnaf = 25;
+            userPoints.ekonomi = 25;
+            userPoints.istihdam = 25;
+
+            document.getElementById('detail-card-points').innerText = '100/100';
+            updatePassportPointsUI();
+            showToast("Atölye katkın Ada Pasaportuna kaydedildi! (+100 Puan)");
+        }
+
+        function addToExplorationPlan() {
+            showToast("Etkinlik keşif planına eklendi.");
+            closeDetailModal();
+        }
+
+        function openPassportModal() {
+            const el = document.getElementById('pasaport');
+            el.scrollIntoView({ behavior: 'smooth' });
+            showToast("Ada Pasaportun gösteriliyor.");
+        }
+
+        function updatePassportPointsUI() {
+            document.getElementById('pt-geridonisum').innerText = userPoints.geridonisum;
+            document.getElementById('pt-esnaf').innerText = userPoints.esnaf;
+            document.getElementById('pt-ekonomi').innerText = userPoints.ekonomi;
+            document.getElementById('pt-istihdam').innerText = userPoints.istihdam;
+            
+            const total = userPoints.geridonisum + userPoints.esnaf + userPoints.ekonomi + userPoints.istihdam;
+            document.getElementById('passport-total-points').innerText = total;
+        }
+    </script>
+</body>
+</html>
